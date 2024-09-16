@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>HodlInfo</title>
+  <link rel="stylesheet" href="index.css">
+</head>
+<body>
+  <div class="container">
+    <header>
+      <div class="logo">HODLINFO</div>
+      <div class="currency-selection">
+        <button>INR</button>
+        <button>BTC</button>
+        <button class="buy-btn">BUY BTC</button>
+      </div>
+      <button class="connect-btn">Connect Telegram</button>
+    </header>
+    
+    <div class="price-info">
+        <div class="percentage-changes">
+          <p class="percentage">0.1 %</p>
+          <p class="label">5 Mins</p>
+        </div>
+        
+        <div class="percentage-changes">
+          <p class="percentage">0.96 %</p>
+          <p class="label">1 Hour</p>
+        </div>
+        
+        <div class="best-price">
+          <p class="title">Best Price to Trade</p>
+          <h1>₹ 26,56,110</h1>
+          <p class="subtitle">Average BTC/INR net price including commission</p>
+        </div>
+        
+        <div class="percentage-changes">
+          <p class="percentage">2.73 %</p>
+          <p class="label">1 Day</p>
+        </div>
+        
+        <div class="percentage-changes">
+          <p class="percentage">7.51 %</p>
+          <p class="label">7 Days</p>
+        </div>
+      </div>
+
+    <table>
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Name</th>
+            <th>Last Price</th>
+            <th>Buy Price</th>
+            <th>Sell Price</th>
+            <th>Volume</th>
+            <th>Base Unit</th>
+          </tr>
+        </thead>
+        <tbody id="tickersTable">
+          
+        </tbody>
+      </table>
+  </div>
+
+
+  <script>
+    document.addEventListener('DOMContentLoaded', async function () {
+      try {
+        const response = await fetch('/get-tickers'); 
+        const tickers = await response.json();
+        const tickersTable = document.getElementById('tickersTable');
+        tickersTable.innerHTML = ''; 
+        
+        let i=0;
+        tickers.forEach(ticker => {
+          const row = document.createElement('tr');
+          i++;
+          row.innerHTML = `
+            <td>${i}</td>
+            <td>${ticker.name}</td>
+            <td>${ticker.last}</td>
+            <td>${ticker.buy}</td>
+            <td>${ticker.sell}</td>
+            <td>${ticker.volume}</td>
+            <td>${ticker.base_unit}</td>
+          `;
+          tickersTable.appendChild(row);
+        });
+      } catch (error) {
+        console.error('Error loading tickers:', error);
+      }
+    });
+  </script>
+</body>
+</html>
